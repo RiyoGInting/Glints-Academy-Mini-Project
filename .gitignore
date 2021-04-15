@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+images/*
+videos/*
+.env.development
+.env.test
+note.txt
