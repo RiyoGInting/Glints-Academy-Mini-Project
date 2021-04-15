@@ -1,31 +1,36 @@
-const mongoose = require("mongoose");
-const mongooseDelete = require("mongoose-delete");
-const bcrypt = require("bcrypt"); // Import bcrypt
+const mongoose = require("mongoose"); // Import mongoose
+const mongooseDelete = require("mongoose-delete"); // Import mongoose-delete
 
-// base model, update go ahead
 const CastSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
     },
-    image : {
+    image: {
       type: String,
       required: false,
       default: null,
-      get: getPhoto
+      get: getImage,
     },
   },
   {
+    // Enable timestamps
     timestamps: {
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
   }
 );
-function getPhoto(photo) {
-  return (photo) ? `/images/castPhoto/${photo}` : null
+
+function getImage(image) {
+  if (!image) {
+    return `/default/profile-picture.jpg`;
+  }
+  return `/images/${image}`;
 }
+
+// Enable soft delete
 CastSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-module.exports = mongoose.model("cast", CastSchema);
+module.exports = mongoose.model("cast", CastSchema); // Export user models
