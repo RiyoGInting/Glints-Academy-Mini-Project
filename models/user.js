@@ -23,6 +23,12 @@ const UserSchema = new mongoose.Schema(
       default: "user",
       required: true,
     },
+    image: {
+      type: String,
+      default: null,
+      required: false,
+      get: getImage,
+    },
   },
   {
     timestamps: {
@@ -37,6 +43,12 @@ function encryptPassword(password) {
   return encryptPassword;
 }
 
+function getImage(image) {
+  if (!image) {
+    return null;
+  }
+  return `/images/${image}`;
+}
 UserSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
 module.exports = mongoose.model("user", UserSchema);
