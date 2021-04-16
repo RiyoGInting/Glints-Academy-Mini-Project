@@ -1,19 +1,12 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
-const bcrypt = require("bcrypt"); // Import bcrypt
+const bcrypt = require("bcrypt");
 
-// base model, update go ahead
 const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
-    },
-    image : {
-      type: String,
-      required: false,
-      default: null,
-      get: getPhoto
     },
     email: {
       type: String,
@@ -23,17 +16,24 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      set: encryptData
+      set: encryptPassword,
     },
     role: {
       type: String,
       default: "user",
       required: true,
     },
-    watchlist: [{
-      type: mongoose.Schema.ObjectId,
-      ref: 'movie'
-    }]
+    username: {
+      type: String,
+      default: null,
+      required: false,
+    },
+    image: {
+      type: String,
+      default: null,
+      required: false,
+      get: getImage,
+    },
   },
   {
     timestamps: {
@@ -43,12 +43,16 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-function encryptData(password){
-  const encryptPassword = bcrypt.hashSync(password, 10)
-  return encryptPassword
+function encryptPassword(password) {
+  const encryptPassword = bcrypt.hashSync(password, 10);
+  return encryptPassword;
 }
-function getPhoto(photo) {
-  return (photo) ? `/images/userPhoto/${photo}` : null
+
+function getImage(image) {
+  if (!image) {
+    return null;
+  }
+  return `/images/${image}`;
 }
 UserSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
