@@ -12,9 +12,10 @@ mongoose
   .then(() => console.log("mongoose connected"))
   .catch((err) => console.log(err));
 
+const category = require('./category')
 const cast = require('./cast')
 const movie = require("./movie");
 const review = require("./review");
 const user = require("./user");
 
-module.exports = { movie, review, user, cast };
+module.exports = { movie, review, user, cast, category };

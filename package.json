@@ -4,15 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "NODE_ENV=development nodemon index.js"
+    "dev": "NODE_ENV=development nodemon index",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --coverage --forceExit"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.com:binarxglints_batch11/miniproject/team-d/backendteam.git"
+    "url": "git+ssh://git@gitlab.com/binarxglints_batch11/miniproject/team-d/backendteam.git"
   },
-  "author": "Team D",
+  "author": "Ikhz",
   "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/binarxglints_batch11/miniproject/team-d/backendteam/issues"
+  },
+  "homepage": "https://gitlab.com/binarxglints_batch11/miniproject/team-d/backendteam#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^8.2.0",

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
 
-// base model, update go ahead
 const ReviewSchema = new mongoose.Schema(
   {
     review: {
@@ -13,13 +12,13 @@ const ReviewSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    reviewUser: {
-      type: mongoose.Schema.ObjectId,
-      ref: "user",
-    },
     movieId: {
       type: mongoose.Schema.ObjectId,
       ref: "movie",
+    },
+    userId: {
+      type: mongoose.Schema.ObjectId,
+      ref: "user",
     },
   },
   {

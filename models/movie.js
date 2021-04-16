@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseDelete = require("mongoose-delete");
 
-// base model, update go ahead
 const MovieSchema = new mongoose.Schema(
   {
     title: {
@@ -9,38 +8,46 @@ const MovieSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    category: {
-      type: String,
-      required: true,
-    },
     synopsis: {
       type: String,
       required: true,
     },
-    releaseYear : {
-      type: Date,
-      required: true
+    releaseYear: {
+      type: Number,
+      required: true,
     },
     averageRating: {
       type: Number,
       required: false,
-      default: 0
+      default: 0,
     },
-    review: [{
+    category: {
       type: mongoose.Schema.ObjectId,
-      ref: 'review'
-    }],
-    poster : {
-      type: String,
-      required: false,
-      default: null,
-      get: getPoster
+      ref: "category",
     },
-    trailer : {
+    reviews: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "review",
+      },
+    ],
+    casts: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "cast",
+      },
+    ],
+    poster: {
       type: String,
       required: false,
       default: null,
-      get: getTrailer
+      get: getPoster,
+    },
+    trailer: {
+      type: String,
+      required: false,
+      default: null,
+      get: getTrailer,
     },
   },
   {
@@ -48,15 +55,20 @@ const MovieSchema = new mongoose.Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
+    toJSON: { getters: true },
   }
 );
 
 function getPoster(poster) {
-  return (poster) ? `/images/moviePoster/${poster}` : null
+  return poster ? `/images/moviePoster/${poster}`: null
 }
 function getTrailer(video) {
-  return (video) ? `/videos/movieTrailer/${video}` : null
+  return video ? `/videos/movieTrailer/${video}` : null;
 }
+
+// MovieSchema.pre('reviews', (next)=> {
+
+// })
 
 MovieSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
