@@ -1,7 +1,7 @@
 node_modules/
 coverage/
-images/*
-videos/*
+images/
+videos/
 .env.development
 .env.test
 note.txt

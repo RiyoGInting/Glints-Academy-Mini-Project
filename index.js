@@ -12,12 +12,11 @@ app.use(express.urlencoded({
 })); // support encoded bodies
 
 const movieRoutes = require('./routes/movieRoutes.js')
-const userRoutes = require('./routes/userRoutes.js')
 
 app.use(fileUpload());
+app.use(express.static('public'));
 
 app.use('/movie', movieRoutes)
-app.use('/auth', userRoutes)
 
 if(process.env.NODE_ENV !== 'test'){
   app.listen(3000, () => console.log("server running on http://localhost:3000"))

@@ -55,11 +55,12 @@ const MovieSchema = new mongoose.Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
+    toJSON: { getters: true },
   }
 );
 
 function getPoster(poster) {
-  return poster ? `/images/moviePoster/${poster}` : null;
+  return poster ? `/images/moviePoster/${poster}`: null
 }
 function getTrailer(video) {
   return video ? `/videos/movieTrailer/${video}` : null;
