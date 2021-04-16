@@ -1,9 +1,6 @@
 const express = require("express"); // Import express
 const router = express.Router(); // Make a router
 
-// Import auth (middleware)
-const auth = require("../middlewares/auth");
-
 // Import imageUpload function
 const castUpload = require("../middlewares/uploads/castUpload");
 
