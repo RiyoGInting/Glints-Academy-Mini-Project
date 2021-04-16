@@ -1,12 +1,8 @@
 const validator = require("validator");
 
-exports.signup = async (req, res, next) => {
+exports.update = async (req, res, next) => {
   try {
     let errors = [];
-
-    if (!validator.isEmail(req.body.email)) {
-      errors.push("Please insert a valid email");
-    }
 
     if (!validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
       errors.push("Name must be a valid alpha");
@@ -40,10 +36,6 @@ exports.signup = async (req, res, next) => {
       }
     }
 
-    if (req.body.confirmPassword !== req.body.password) {
-      errors.push("confirmation password must be same as password");
-    }
-
     if (errors.length > 0) {
       return res.status(400).json({
         message: errors.join(", "),
@@ -53,35 +45,8 @@ exports.signup = async (req, res, next) => {
     next();
   } catch (err) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: "Internal server error",
       error: err.message,
-    });
-  }
-};
-
-exports.signin = async (req, res, next) => {
-  try {
-    let errors = [];
-
-    if (!validator.isEmail(req.body.email)) {
-      errors.push("Email not found");
-    }
-
-    if (!validator.isStrongPassword(req.body.password)) {
-      errors.push("Wrong password");
-    }
-
-    if (errors.length > 0) {
-      return res.status(400).json({
-        message: errors.join(", "),
-      });
-    }
-
-    next();
-  } catch (err) {
-    return res.status(500).json({
-      message: "Internal Server Error",
-      error: e.message,
     });
   }
 };
