@@ -23,6 +23,11 @@ const UserSchema = new mongoose.Schema(
       default: "user",
       required: true,
     },
+    username: {
+      type: String,
+      default: null,
+      required: false,
+    },
     image: {
       type: String,
       default: null,
