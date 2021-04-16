@@ -1,4 +1,4 @@
-const { cast } = require("../models");
+const { cast, movie } = require("../models");
 
 class CastController {
   //get all data
@@ -6,7 +6,7 @@ class CastController {
     try {
       //find all data
       let data = await cast.find();
-      
+
       //if no data
       if (data.length === 0) {
         return res.status(404).json({
@@ -31,9 +31,11 @@ class CastController {
   async getOne(req, res) {
     try {
       //find all data
-      let data = await cast.findOne({
-        _id: req.params.id,
-      });
+      let data = await cast
+        .findOne({
+          _id: req.params.id,
+        })
+        .populate(movie);
       //if no data
       if (!data) {
         return res.status(404).json({
@@ -84,7 +86,7 @@ class CastController {
         },
         req.body,
         {
-            new: true,
+          new: true,
         }
       );
       //if no data
