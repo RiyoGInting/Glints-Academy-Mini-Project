@@ -1,6 +1,9 @@
 const express = require("express"); // Import express
 const router = express.Router(); // Make a router
 
+// Import validator
+const categoryValidator = require("../middlewares/validators/categoryValidator");
+
 // Import controller
 const categoryController = require("../controllers/categoryController");
 
@@ -11,8 +14,8 @@ router
   .post(categoryController.create);
 router
   .route("/:id")
-  .get(categoryController.getOne)
-  .put(categoryController.update)
-  .delete(categoryController.delete);
+  .get(categoryValidator.getOne, categoryController.getOne)
+  .put(categoryValidator.update, categoryController.update)
+  .delete(categoryValidator.delete, categoryController.delete);
 
 module.exports = router; // Export router

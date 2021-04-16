@@ -7,6 +7,11 @@ const CategorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    movies: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "movie",
+      required: false,
+    },
   },
   {
     // Enable timestamps

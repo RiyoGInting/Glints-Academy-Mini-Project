@@ -1,4 +1,4 @@
-const { category } = require("../models");
+const { category, movie } = require("../models");
 
 class CategoryController {
   //get all data
@@ -34,7 +34,7 @@ class CategoryController {
       //find all data
       let data = await category.findOne({
         _id: req.params.id,
-      });
+      }).populate(movie);
       //if no data
       if (!data) {
         return res.status(404).json({
