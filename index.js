@@ -77,3 +77,5 @@ app.use("/category", categoryRoutes);
 if (process.env.NODE_ENV !== "test") {
   app.listen(3000, () => console.log("server running on http://localhost:3000"));
 }
+
+module.exports = app

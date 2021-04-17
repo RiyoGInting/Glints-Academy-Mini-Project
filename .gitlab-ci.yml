@@ -1,6 +1,6 @@
 # We have 2 stage Test and Deploy
 stages:
-  # - test
+  - test
   - deploy
 
 # Config cache
@@ -32,7 +32,7 @@ deploy:
   stage: deploy
   # Config to use our Runner with Executor Shell
   tags:
-    - team-d
+    - mini-project
   script:
     # Only copy changed files to project folder
     - cp -r -u * $PROJECT_DIR

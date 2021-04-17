@@ -60,15 +60,11 @@ const MovieSchema = new mongoose.Schema(
 );
 
 function getPoster(poster) {
-  return poster ? `/images/moviePoster/${poster}`: null
+  return poster ? `/images/moviePoster/${poster}` : `/default/default-poster.png`;
 }
 function getTrailer(video) {
-  return video ? `/videos/movieTrailer/${video}` : null;
+  return video ? `/videos/movieTrailer/${video}` : `/default/default-poster.png`;
 }
-
-// MovieSchema.pre('reviews', (next)=> {
-
-// })
 
 MovieSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon index",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --coverage --forceExit"
+    "test": "NODE_ENV=test jest --testTimeout=10000 --coverage --forceExit"
   },
   "repository": {
     "type": "git",
@@ -19,23 +19,23 @@
   "homepage": "https://gitlab.com/binarxglints_batch11/miniproject/team-d/backendteam#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.3",
-    "mongoose-delete": "^0.5.3",
-    "passport": "^0.4.1",
-    "passport-jwt": "^4.0.0",
-    "passport-local": "^1.0.0",
-    "validator": "^13.5.2",
-    "xss-clean": "^0.1.1",
-    "morgan": "^1.10.0",
     "express-mongo-sanitize": "^2.0.2",
     "express-rate-limit": "^5.2.6",
     "helmet": "^4.4.1",
     "hpp": "^0.2.3",
-    "cors": "^2.8.5"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
+    "mongoose-delete": "^0.5.3",
+    "morgan": "^1.10.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "validator": "^13.5.2",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "jest": "^26.6.3",
