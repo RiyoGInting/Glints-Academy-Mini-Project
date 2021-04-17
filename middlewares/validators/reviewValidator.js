@@ -40,8 +40,8 @@ exports.create = async (req, res, next) => {
     }
 
     // check if rating is between the numbers 1-5
-    if (req.body.rating < 0 || req.body.rating > 5) {
-      errors.push("Please rate movie between 0 to 5 stars");
+    if (req.body.rating < 1 || req.body.rating > 5) {
+      errors.push("Please rate movie between 1 to 5 stars");
     }
 
     // check if rating is numeric
@@ -49,7 +49,7 @@ exports.create = async (req, res, next) => {
       errors.push("Rating must be a number");
     }
 
-    // find user & movie IDs [please recheck "userId" & movieId names on req.body]
+    // find user & movie IDs [please recheck "userId" & "movieId" names on req.body]
     let findData = await Promise.all([
       user.findOne({ _id: req.body.userId }),
       movie.findOne({ _id: req.body.movieId }),
@@ -107,8 +107,8 @@ exports.update = async (req, res, next) => {
     }
 
     // check if rating is between the numbers 1-5
-    if (req.body.rating < 0 || req.body.rating > 5) {
-      errors.push("Please rate movie between 0 to 5 stars");
+    if (req.body.rating < 1 || req.body.rating > 5) {
+      errors.push("Please rate movie between 1 to 5 stars");
     }
 
     // check if rating is numeric
