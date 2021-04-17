@@ -25,7 +25,8 @@ class MovieController {
         error: error.message,
       });
     }
-  }; 
+  };
+
   getAllbyCategory = async (req, res) => {
     try {
       if (!mongoose.Types.ObjectId.isValid(req.params.category)) {
@@ -57,19 +58,18 @@ class MovieController {
       });
     }
   };
+
   getAllbyTitle = async (req, res) => {
     try {
       const getTitle = await movie
-        .find({
-          title: { $regex: req.params.title, $options: "i" },
-        })
+        .find({ title: { $regex: req.params.title, $options: "i" } })
         .limit(10);
 
       return res.status(200).json({
         message: "Success Get Title by Search",
         result: getTitle,
-        totalPage: total,
       });
+
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -77,22 +77,27 @@ class MovieController {
       });
     }
   };
+
   getOne = async (req, res) => {
     try {
+
       if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({
           message: "Id request is not valid",
         });
       }
+
       const getOne = await movie
         .findOne({ _id: req.params.id })
         .populate("reviews")
         .populate("category")
         .populate("casts");
+
       return res.status(200).json({
         message: "success",
         result: getOne,
       });
+
     } catch (error) {
       res.status(500).json({
         message: "Internal Server Error",
@@ -100,6 +105,7 @@ class MovieController {
       });
     }
   };
+
   createMovie = async (req, res) => {
     try {
       if (req.files) await this.setFiles(req, res);
@@ -110,6 +116,7 @@ class MovieController {
         message: "Movie Succesfully Inserted",
         data: create,
       });
+
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -117,6 +124,7 @@ class MovieController {
       });
     }
   };
+
   updateMovie = async (req, res) => {
     try {
       if (req.files) {
@@ -131,17 +139,18 @@ class MovieController {
           await this.delFiles(filePath.trailer);
         }
       }
+
       const create = await movie.updateOne(
-        {
-          _id: req.params.id,
-        },
+        { _id: req.params.id },
         { ...req.body, $push: { casts: req.body.castId } },
         { new: true }
       );
+
       return res.status(200).json({
         message: "Success",
         data: create,
       });
+      
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -149,18 +158,21 @@ class MovieController {
       });
     }
   };
+
   deleteMovie = async (req, res) => {
     try {
       const result = await movie.findOne({ _id: req.params.id });
-      await review.deleteMany({
-        _id: { $in: result.reviews },
-      });
+
+      await review.deleteMany({ _id: { $in: result.reviews } });
+
       await this.delFiles(result.poster);
       await this.delFiles(result.trailer);
       await movie.deleteOne({ _id: req.params.id });
+
       return res.status(200).json({
         message: `Success, Movie ${result.title} is Deleted`,
       });
+
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -168,12 +180,11 @@ class MovieController {
       });
     }
   };
+
   setFiles = async (req, res) => {
-    let file;
-    let filePath;
     if (req.files.poster) {
-      file = req.files.poster;
-      filePath = "images/moviePoster/";
+      const file = req.files.poster;
+      const filePath = "images/moviePoster/";
 
       if (!file.mimetype.startsWith("image")) {
         return res.status(400).json({ message: "File must be an image " });
@@ -184,13 +195,31 @@ class MovieController {
       file.name = `${fileName}${path.parse(file.name).ext}`;
 
       req.body.poster = file.name;
+
+      try {
+        await file.mv(`./public/${filePath}${file.name}`, (err) => {
+          if (err) {
+            console.log(err);
+
+            return res.status(500).json({
+              message: "Internal Server Error",
+              error: err,
+            });
+          }
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: error.message,
+        });
+      }
     }
     if (req.files.trailer) {
-      file = req.files.trailer;
-      filePath = "videos/movieTrailer/";
+      const file = req.files.trailer;
+      const filePath = "videos/movieTrailer/";
 
       if (!file.mimetype.startsWith("video")) {
-        return res.status(400).json({ message: "File must be an videos " });
+        return res.status(400).json({ message: "File must be a videos " });
       }
 
       const fileName = crypto.randomBytes(16).toString("hex");
@@ -198,26 +227,27 @@ class MovieController {
       file.name = `${fileName}${path.parse(file.name).ext}`;
 
       req.body.trailer = file.name;
-    }
 
-    try {
-      await file.mv(`./public/${filePath}${file.name}`, (err) => {
-        if (err) {
-          console.log(err);
+      try {
+        await file.mv(`./public/${filePath}${file.name}`, (err) => {
+          if (err) {
+            console.log(err);
 
-          return res.status(500).json({
-            message: "Internal Server Error",
-            error: err,
-          });
-        }
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: error.message,
-      });
+            return res.status(500).json({
+              message: "Internal Server Error",
+              error: err,
+            });
+          }
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: error.message,
+        });
+      }
     }
   };
+
   delFiles = (filePath) => {
     filePath = `./public${filePath}`;
 

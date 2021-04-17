@@ -1,6 +1,12 @@
 node_modules/
 coverage/
-images/*
-videos/*
 .env.development
 .env.test
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.gif
+*.mp4
+*.3pg
+*.avi
