@@ -1,12 +1,12 @@
-const { cast, movie } = require("../models");
+const { category, movie } = require("../models");
 
-class CastController {
+class CategoryController {
   //get all data
   async getAll(req, res) {
     try {
       //find all data
-      let data = await cast.find();
-
+      let data = await category.find();
+      console.log(data);
       //if no data
       if (data.length === 0) {
         return res.status(404).json({
@@ -20,6 +20,7 @@ class CastController {
       });
       //if error
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         message: "Internal Server Error",
         error,
@@ -31,11 +32,9 @@ class CastController {
   async getOne(req, res) {
     try {
       //find all data
-      let data = await cast
-        .findOne({
-          _id: req.params.id,
-        })
-        .populate(movie);
+      let data = await category.findOne({
+        _id: req.params.id,
+      }).populate(movie);
       //if no data
       if (!data) {
         return res.status(404).json({
@@ -60,7 +59,7 @@ class CastController {
   async create(req, res) {
     try {
       //find all data
-      let data = await cast.create(req.body);
+      let data = await category.create(req.body);
       //if success
       return res.status(200).json({
         message: "Success Create Data",
@@ -80,13 +79,13 @@ class CastController {
   async update(req, res) {
     try {
       //update and find one data all data
-      let data = await cast.findOneAndUpdate(
+      let data = await category.findOneAndUpdate(
         {
           _id: req.params.id,
         },
         req.body,
         {
-          new: true,
+            new: true,
         }
       );
       //if no data
@@ -113,7 +112,7 @@ class CastController {
   async delete(req, res) {
     try {
       //find one data
-      let findData = await cast.findOne({
+      let findData = await category.findOne({
         _id: req.params.id,
       });
       //if no data
@@ -123,7 +122,7 @@ class CastController {
         });
       }
       //delete one data
-      await cast.delete({
+      await category.delete({
         _id: req.params.id,
       });
       //if success
@@ -140,4 +139,4 @@ class CastController {
   }
 }
 
-module.exports = new CastController();
+module.exports = new CategoryController();

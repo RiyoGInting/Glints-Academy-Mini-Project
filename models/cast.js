@@ -13,6 +13,11 @@ const CastSchema = new mongoose.Schema(
       default: null,
       get: getImage,
     },
+    movies: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "movie",
+      required: false,
+    },
   },
   {
     // Enable timestamps

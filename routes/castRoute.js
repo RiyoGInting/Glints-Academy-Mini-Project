@@ -1,11 +1,11 @@
 const express = require("express"); // Import express
 const router = express.Router(); // Make a router
 
-// Import auth (middleware)
-const auth = require("../middlewares/auth");
-
 // Import imageUpload function
 const castUpload = require("../middlewares/uploads/castUpload");
+
+// Import validator
+const castValidator = require("../middlewares/validators/castValidator");
 
 // Import controller
 const castController = require("../controllers/castController");
@@ -17,8 +17,8 @@ router
   .post(castUpload, castController.create);
 router
   .route("/:id")
-  .get(castController.getOne)
-  .put(castUpload, castController.update)
-  .delete(castController.delete);
+  .get(castValidator.getOne, castController.getOne)
+  .put(castUpload, castValidator.update, castController.update)
+  .delete(castValidator.delete, castController.delete);
 
 module.exports = router; // Export router

@@ -7,6 +7,11 @@ const CategorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    movies: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "movie",
+      required: false,
+    },
   },
   {
     // Enable timestamps
@@ -17,6 +22,7 @@ const CategorySchema = new mongoose.Schema(
   }
 );
 
+// Enable soft delete
 CategorySchema.plugin(mongooseDelete, { overrideMethods: "all" });
 
-module.exports = mongoose.model("category", CategorySchema); // Export user models
+module.exports = mongoose.model("category", CategorySchema); // Export category models
