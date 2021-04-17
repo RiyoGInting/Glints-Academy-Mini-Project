@@ -16,6 +16,7 @@ const userRoutes = require("./routes/userRoutes");
 const castRoutes = require("./routes/castRoute");
 const movieRoutes = require("./routes/movieRoutes");
 const categoryRoutes = require("./routes/categoryRoute");
+const reviewRoutes = require("./routes/reviewRoute");
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use("/user", userRoutes);
 app.use("/cast", castRoutes);
 app.use("/movie", movieRoutes);
 app.use("/category", categoryRoutes);
+app.use("/review", reviewRoutes);
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(3000, () => console.log("server running on http://localhost:3000"));
