@@ -49,7 +49,7 @@ exports.create = async (req, res, next) => {
       errors.push("Rating must be a number");
     }
 
-    // find user & movie IDs [please recheck "userId" & "movieId" names on req.body]
+    // find user & movie IDs
     let findData = await Promise.all([
       user.findOne({ _id: req.body.userId }),
       movie.findOne({ _id: req.body.movieId }),
@@ -86,7 +86,7 @@ exports.update = async (req, res, next) => {
     let errors = [];
 
     // check if Review Id is valid
-    if (!mongoose.Types.ObjectId.isValid(req.body.id)) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       errors.push(
         "Review ID is not valid. Must be a 24 character-long hexadecimal"
       );
@@ -116,7 +116,7 @@ exports.update = async (req, res, next) => {
       errors.push("Rating must be a number");
     }
 
-    // find user & movie IDs [please recheck "userId" & movieId names on req.body]
+    // find user & movie IDs
     let findData = await Promise.all([
       user.findOne({ _id: req.body.userId }),
       movie.findOne({ _id: req.body.movieId }),
