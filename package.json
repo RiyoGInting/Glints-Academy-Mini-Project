@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon index",
-    "test": "NODE_ENV=test jest --testTimeout=10000 --coverage --forceExit"
+    "test": "NODE_ENV=test jest --testTimeout=10000 --coverage --forceExit",
+    "stop": "NODE_ENV=production forever stop index.js || true",
+    "start": "NODE_ENV=production forever start index.js"
   },
   "repository": {
     "type": "git",
