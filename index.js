@@ -10,8 +10,6 @@ const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 const helmet = require("helmet");
 const cors = require("cors");
-const morgan = require("morgan");
-const fs = require('fs')
 // import route
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -55,17 +53,6 @@ app.use(
 
 // CORS
 app.use(cors());
-
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-} else {
-  // create a write stream (in append mode)
-  let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
-    flags: "a",
-  });
-  // setup the logger
-  app.use(morgan("combined", { stream: accessLogStream }));
-}
 
 app.use(express.static("public"));
 // set route
