@@ -9,16 +9,16 @@ beforeAll(async () => {
   token = await initialData()
 });
 
-const initialData = async() => {
-  const res = await request(app).post('/auth/signup').send({
-    email: "fikriztm@gmail.com",
-    password: "!Default1",
-    confirmPassword: "!Default1",
-    name: "ikhz",
-    role: "admin"
-  })
-  return res.body.token
-}
+// const initialData = async() => {
+//   const res = await request(app).post('/auth/signup').send({
+//     email: "fikriztm@gmail.com",
+//     password: "!Default1",
+//     confirmPassword: "!Default1",
+//     name: "ikhz",
+//     role: "admin"
+//   })
+//   return res.body.token
+// }
 
 describe("Auth Test", ()=> {
   describe("/auth/signup POST", ()=> {

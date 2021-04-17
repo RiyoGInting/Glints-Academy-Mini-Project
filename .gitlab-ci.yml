@@ -19,7 +19,7 @@ test:
     - docker
   script:
     - echo "MONGO_URI"=$ENVIRONMENT_TEST_MONGO_URI > .env.test
-    - echo "JWT_TOKEN"=$ENVIRONMENT_TEST_JWT_TOKEN >> .env.test
+    - echo "JWT_SECRET"=$ENVIRONMENT_TEST_JWT_SECRET >> .env.test
     - npm i
     - npm run test
   # Defines the names of branches and tags the job runs for
@@ -38,7 +38,7 @@ deploy:
     - cp -r -u * $PROJECT_DIR
     - cd $PROJECT_DIR
     - echo "MONGO_URI"=$ENVIRONMENT_PRODUCTION_MONGO_URI > .env.production
-    - echo "JWT_TOKEN"=$ENVIRONMENT_PRODUCTION_JWT_TOKEN >> .env.production
+    - echo "JWT_SECRET"=$ENVIRONMENT_PRODUCTION_JWT_SECRET >> .env.production
     - npm i
     # Restart NodeJS service
     - npm run stop
