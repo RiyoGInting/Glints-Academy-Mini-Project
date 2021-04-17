@@ -11,6 +11,7 @@ const hpp = require("hpp");
 const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
+const fs = require('fs')
 // import route
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
