@@ -33,7 +33,7 @@ function getImage(image) {
   if (!image) {
     return `/default/profile-picture.jpg`;
   }
-  return `/images/${image}`;
+  return `/images/casts/${image}`;
 }
 
 // Enable soft delete

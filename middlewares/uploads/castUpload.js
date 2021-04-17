@@ -30,7 +30,7 @@ function castUpload(req, res, next) {
         if (err) return res.status(500).send(err);
       });
 
-      req.body.image = `/images/casts/${fileName}`;
+      req.body.image = fileName;
       next();
     } else {
       return res.status(400).send("file is not an image");
