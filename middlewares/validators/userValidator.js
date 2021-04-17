@@ -4,25 +4,28 @@ exports.update = async (req, res, next) => {
   try {
     let errors = [];
 
-    if (!validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
+    if (
+      req.body.name &&
+      !validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })
+    ) {
       errors.push("Name must be a valid alpha");
     }
 
-    let result = validator.isStrongPassword(req.body.password, {
-      returnScore: true,
-      pointsPerUnique: 0,
-      pointsPerRepeat: 0,
-      pointsForContainingLower: ",lower",
-      pointsForContainingUpper: ",upper",
-      pointsForContainingNumber: ",number",
-      pointsForContainingSymbol: ",symbol",
-    });
-    // set all return result to array
-    result = result.split(",");
-    // complete password parameter
-    const passValid = ["0", "lower", "upper", "number", "symbol"];
     // password validation
-    if (!validator.isStrongPassword(req.body.password)) {
+    if (req.body.password && !validator.isStrongPassword(req.body.password)) {
+      let result = validator.isStrongPassword(req.body.password, {
+        returnScore: true,
+        pointsPerUnique: 0,
+        pointsPerRepeat: 0,
+        pointsForContainingLower: ",lower",
+        pointsForContainingUpper: ",upper",
+        pointsForContainingNumber: ",number",
+        pointsForContainingSymbol: ",symbol",
+      });
+      // set all return result to array
+      result = result.split(",");
+      // complete password parameter
+      const passValid = ["0", "lower", "upper", "number", "symbol"];
       // check what validation is invoked
       const messageFilter = passValid.filter((i) => !result.includes(i));
       if (messageFilter.length > 0) {
