@@ -2,23 +2,11 @@ const request = require("supertest");
 const app = require("../index");
 
 const { user, review, movie, category, cast } = require("../models");
-let token;
 
 beforeAll(async () => {
   await Promise.all([user.deleteMany(), review.deleteMany()]);
-  token = await initialData()
 });
 
-// const initialData = async() => {
-//   const res = await request(app).post('/auth/signup').send({
-//     email: "fikriztm@gmail.com",
-//     password: "!Default1",
-//     confirmPassword: "!Default1",
-//     name: "ikhz",
-//     role: "admin"
-//   })
-//   return res.body.token
-// }
 
 describe("Auth Test", ()=> {
   describe("/auth/signup POST", ()=> {
