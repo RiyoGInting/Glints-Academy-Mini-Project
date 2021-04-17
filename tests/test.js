@@ -21,7 +21,7 @@ describe("Auth Test", ()=> {
 
       expect(res.statusCode).toEqual(200)
       expect(res.body).toBeInstanceOf(Object)
-      expect(res.body.message).toEqual("Token Created")
+      expect(res.body.message).toEqual("Success")
       expect(res.body).toHaveProperty("token")
     })
   })
