@@ -27,6 +27,32 @@ class ReviewController {
     }
   } // end of Get All
 
+  // // Get All
+  // async getAllByUser(req, res) {
+  //   try {
+  //     // Find all data
+  //     let data = await review.find();
+
+  //     // If no data
+  //     if (data.length === 0) {
+  //       return res.status(404).json({
+  //         message: "No reviews found",
+  //       });
+  //     }
+
+  //     // If successful
+  //     return res.status(200).json({
+  //       message: "Success",
+  //       data,
+  //     });
+  //   } catch (err) {
+  //     return res.status(500).json({
+  //       message: "Internal Server Error",
+  //       error: err.message,
+  //     });
+  //   }
+  // } // end of Get All
+
   // Get One
   async getOne(req, res) {
     try {
@@ -53,7 +79,7 @@ class ReviewController {
     }
   } // end of Get One
 
-  // Create transaksi
+  // Create Review
   async create(req, res) {
     try {
       // create data
@@ -78,7 +104,7 @@ class ReviewController {
       // update data
       let data = await review.findOneAndUpdate(
         {
-          _id: req.params.id,
+          _id: req.params.id, userId: req.user._id,
         },
         req.body, // this includes all of req.body
         {
