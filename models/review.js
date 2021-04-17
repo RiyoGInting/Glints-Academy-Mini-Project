@@ -30,6 +30,9 @@ const ReviewSchema = new mongoose.Schema(
     }
 )
 
+// only permits user to submit one review per movie
+ReviewSchema.index({ movie: 1, user:1 }, { unique: true });
+
 // enable soft delete
 ReviewSchema.plugin(mongooseDelete, { overrideMethods: "all" });
 

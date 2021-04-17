@@ -1,8 +1,3 @@
-/* TO RE=CHECK
-    - nama req.body for UserId & MovieId
-
-*/
-
 const mongoose = require("mongoose");
 const validator = require("validator");
 const { review, movie, user } = require("../../models");

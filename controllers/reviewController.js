@@ -1,7 +1,7 @@
 const { review, user, movie } = require("../models");
 
 class ReviewController {
-  // Get All
+  // Get All (with no pagination yet)
   async getAll(req, res) {
     try {
       // Find all data
@@ -27,23 +27,31 @@ class ReviewController {
     }
   } // end of Get All
 
-  // // Get All
-  // async getAllByUser(req, res) {
+  // // Get All By User (with pagination)
+  // getAllByUser = async (req, res) => {
   //   try {
-  //     // Find all data
-  //     let data = await review.find();
-
-  //     // If no data
-  //     if (data.length === 0) {
-  //       return res.status(404).json({
-  //         message: "No reviews found",
+  //     if (!mongoose.Types.ObjectId.isValid(req.params.category)) {
+  //       return res.status(400).json({
+  //         message: "Id request is not valid",
   //       });
   //     }
 
-  //     // If successful
+  //     let total = await review.find({ category: req.params.category });
+  //     if (req.params.page == 0) req.params.page = 1;
+  //     const skip = (req.params.page - 1) * 10;
+
+  //     total = Math.ceil(total.length / 10);
+  //     const getCategory = await movie
+  //       .find({
+  //         category: req.params.category,
+  //       })
+  //       .skip(skip)
+  //       .limit(10);
+
   //     return res.status(200).json({
-  //       message: "Success",
-  //       data,
+  //       message: "Success Get Category",
+  //       result: getCategory,
+  //       totalPage: total,
   //     });
   //   } catch (err) {
   //     return res.status(500).json({
@@ -51,7 +59,7 @@ class ReviewController {
   //       error: err.message,
   //     });
   //   }
-  // } // end of Get All
+  // }; // end of Get All By User
 
   // Get One
   async getOne(req, res) {
