@@ -33,25 +33,25 @@ const ReviewSchema = new mongoose.Schema(
 );
 
 // only permits user to submit one review per movie
-ReviewSchema.index({ movie: 1, user: 1 }, { unique: true });
+ReviewSchema.index({ movieId: 1, userId: 1 }, { unique: true });
 
 // Static method to get average rating
 ReviewSchema.statics.getAverageRating = async function (movieId) {
   const obj = await this.aggregate([
     {
-      $match: { movie: movieId },
+      $match: { movieId: movieId },
     },
     {
       /*fix this */
       $group: {
-        _id: "$movie",
+        _id: "$movieId",
         averageRating: { $avg: "$rating" },
       },
     },
   ]);
-
+  console.log(obj)
   try {
-    await this.model("Movie").findByIdAndUpdate(movieId, {
+    await this.model("movie").findByIdAndUpdate(movieId, {
       averageRating: obj[0].averageRating,
     });
   } catch (err) {
@@ -61,12 +61,33 @@ ReviewSchema.statics.getAverageRating = async function (movieId) {
 
 // call getAverageRating after posting review
 ReviewSchema.post("save", function () {
-  this.constructor.getAverageRating(this.movie);
+  this.constructor.getAverageRating(this.movieId);
 });
-
 // call getAverageRating after deleting review
 ReviewSchema.pre("remove", function () {
-  this.constructor.getAverageRating(this.movie);
+  this.constructor.getAverageRating(this.movieId);
+});
+// calculate averate rating after update review
+ReviewSchema.post("findOneAndUpdate", async function (e) {
+  try {
+    const obj = await mongoose.model("review").aggregate([
+      {
+        $match: { movieId: e.movieId },
+      },
+      {
+        /*fix this */
+        $group: {
+          _id: "$movieId",
+          averageRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+    await mongoose.model("movie").findByIdAndUpdate(e.movieId, {
+      averageRating: obj[0].averageRating,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // enable soft delete

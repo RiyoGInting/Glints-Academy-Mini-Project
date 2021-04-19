@@ -61,15 +61,12 @@ class MovieController {
 
   getAllbyTitle = async (req, res) => {
     try {
-      const getTitle = await movie
-        .find({ title: { $regex: req.params.title, $options: "i" } })
-        .limit(10);
+      const getTitle = await movie.find({ title: { $regex: req.params.title, $options: "i" } }).limit(10);
 
       return res.status(200).json({
         message: "Success Get Title by Search",
         result: getTitle,
       });
-
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -80,7 +77,6 @@ class MovieController {
 
   getOne = async (req, res) => {
     try {
-
       if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({
           message: "Id request is not valid",
@@ -89,15 +85,14 @@ class MovieController {
 
       const getOne = await movie
         .findOne({ _id: req.params.id })
-        .populate("reviews")
-        .populate("category")
+        .populate({path: "reviews", populate: {path: "userId"}})
+        .populate("categories")
         .populate("casts");
 
       return res.status(200).json({
-        message: "success",
+        message: `Get One Movie by Id with title ${getOne.title}`,
         result: getOne,
       });
-
     } catch (error) {
       res.status(500).json({
         message: "Internal Server Error",
@@ -113,10 +108,9 @@ class MovieController {
       const create = await movie.create(req.body);
 
       res.status(200).json({
-        message: "Movie Succesfully Inserted",
+        message: "Movie Succesfully Registered",
         data: create,
       });
-
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -140,15 +134,12 @@ class MovieController {
         }
       }
 
-      const create = await movie.updateOne(
-        { _id: req.params.id },
-        { ...req.body, $push: { casts: req.body.castId } },
-        { new: true }
-      );
+      await movie.updateOne({ _id: req.params.id }, { ...req.body, $push: { casts: req.body.castId } }, { new: true });
+      const result = await movie.findOne({ _id: req.params.id });
 
       return res.status(200).json({
         message: "Success",
-        data: create,
+        data: result,
       });
       
     } catch (error) {
@@ -172,7 +163,6 @@ class MovieController {
       return res.status(200).json({
         message: `Success, Movie ${result.title} is Deleted`,
       });
-
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",

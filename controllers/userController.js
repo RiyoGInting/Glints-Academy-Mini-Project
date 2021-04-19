@@ -1,11 +1,12 @@
 const crypto = require("crypto");
 const path = require("path");
-const { user } = require("../models");
+const { user, review } = require("../models");
 
 class UserController {
   async getOne(req, res) {
     try {
-      let data = await user.findOne({ _id: req.params.id });
+      const data = await user.findOne({ _id: req.user.id });
+      const userReview = await review.find({ userId: req.user.id });
 
       if (!data) {
         return res.status(404).json({
@@ -16,6 +17,7 @@ class UserController {
       return res.status(200).json({
         message: "Success",
         data,
+        userReview,
       });
     } catch (err) {
       return res.status(500).json({
@@ -38,9 +40,7 @@ class UserController {
 
         // Check file size (max 1MB)
         if (file.size > 1000000) {
-          return res
-            .status(400)
-            .json({ message: "Image must be less than 1MB" });
+          return res.status(400).json({ message: "Image must be less than 1MB" });
         }
 
         // Create custom filename
@@ -84,6 +84,29 @@ class UserController {
       });
     }
   }
+  getUserReviews = async (req, res) => {
+    try {
+      const data = await user.findOne({ _id: req.params.id });
+      const userReview = await review.find({ userId: req.params.id });
+
+      if (!data) {
+        return res.status(404).json({
+          message: "User not found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Success",
+        data,
+        userReview,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
+    }
+  };
 }
 
 module.exports = new UserController();

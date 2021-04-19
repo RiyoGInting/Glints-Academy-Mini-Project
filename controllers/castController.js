@@ -35,7 +35,7 @@ class CastController {
         .findOne({
           _id: req.params.id,
         })
-        .populate(movie);
+        .populate("movie");
       //if no data
       if (!data) {
         return res.status(404).json({
