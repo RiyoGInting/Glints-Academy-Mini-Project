@@ -75,7 +75,7 @@ exports.create = async (req, res, next) => {
     next();
   } catch (err) {
     return res.status(500).json({
-      message: "Intenal Server Error",
+      message: "Internal Server Error",
       error: err.message,
     });
   }
@@ -148,7 +148,7 @@ exports.update = async (req, res, next) => {
     next();
   } catch (err) {
     return res.status(500).json({
-      message: "Intenal Server Error",
+      message: "Internal Server Error",
       error: err.message,
     });
   }
@@ -170,7 +170,7 @@ exports.delete = async (req, res, next) => {
 
     // if review not found
     if (!data) {
-        errors.push("Transaksi not found");
+        errors.push("Review not found");
     }
 
     // if errors present, collate here
