@@ -57,7 +57,7 @@ exports.create = async (req, res, next) => {
     next();
   } catch (err) {
     return res.status(500).json({
-      message: "Intenal Server Error validator",
+      message: "Internal Server Error",
       error: err.message,
     });
   }
@@ -100,7 +100,7 @@ exports.update = async (req, res, next) => {
     next();
   } catch (err) {
     return res.status(500).json({
-      message: "Intenal Server Error",
+      message: "Internal Server Error",
       error: err.message,
     });
   }

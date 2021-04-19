@@ -11,7 +11,7 @@ const ReviewSchema = new mongoose.Schema(
       type: Number,
       min: 1,
       max: 5,
-      required: [true, "Please rate between 1 and 5"],
+      required: [true, "Please rate movie between 1 and 5"],
     },
     movieId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -42,7 +42,6 @@ ReviewSchema.statics.getAverageRating = async function (movieId) {
       $match: { movieId: movieId },
     },
     {
-      /*fix this */
       $group: {
         _id: "$movieId",
         averageRating: { $avg: "$rating" },
@@ -59,11 +58,12 @@ ReviewSchema.statics.getAverageRating = async function (movieId) {
   }
 };
 
-// call getAverageRating after posting review
+// call getAverageRating after POSTING review
 ReviewSchema.post("save", function () {
   this.constructor.getAverageRating(this.movieId);
 });
-// call getAverageRating after deleting review
+
+// call getAverageRating after DELETING review
 ReviewSchema.pre("remove", function () {
   this.constructor.getAverageRating(this.movieId);
 });
@@ -76,6 +76,28 @@ ReviewSchema.post("findOneAndUpdate", async function (e) {
       },
       {
         /*fix this */
+        $group: {
+          _id: "$movieId",
+          averageRating: { $avg: "$rating" },
+        },
+      },
+    ]);
+    await mongoose.model("movie").findByIdAndUpdate(e.movieId, {
+      averageRating: obj[0].averageRating,
+    });
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+// calculate averate rating after update review
+ReviewSchema.post("findOneAndUpdate", async function (e) {
+  try {
+    const obj = await mongoose.model("review").aggregate([
+      {
+        $match: { movieId: e.movieId },
+      },
+      {
         $group: {
           _id: "$movieId",
           averageRating: { $avg: "$rating" },
