@@ -120,7 +120,7 @@ exports.delete = async (req, res, next) => {
 
     // if review not found
     if (!req.deleted) {
-      errors.push("Item requested to delete is not exist");
+      errors.push("Can't delete other user review");
     }
 
     // if errors present, collate here

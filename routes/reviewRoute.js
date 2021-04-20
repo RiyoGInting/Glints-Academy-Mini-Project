@@ -7,9 +7,10 @@ const reviewController = require("../controllers/reviewController");
 const auth = require("../middlewares/auth");
 
 // Get One, Create, Update, Delete
-router.get("/:id", reviewValidator.getOne, reviewController.getOne);
-router.post("/", auth.user, reviewValidator.create, reviewController.create);
-router.put("/:id", auth.user, reviewValidator.update, reviewController.update);
-router.delete("/:id", auth.user, reviewValidator.delete, reviewController.delete);
+router.get("/", auth.adminOrUser, reviewController.getMyReview);
+router.get("/:id", auth.adminOrUser, reviewValidator.getOne, reviewController.getUserReviews);
+router.post("/", auth.adminOrUser, reviewValidator.create, reviewController.create);
+router.put("/:id", auth.adminOrUser, reviewValidator.update, reviewController.update);
+router.delete("/:id", auth.adminOrUser, reviewValidator.delete, reviewController.delete);
 
 module.exports = router; 

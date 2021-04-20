@@ -1,12 +1,11 @@
 const crypto = require("crypto");
 const path = require("path");
-const { user, review } = require("../models");
+const { user } = require("../models");
 
 class UserController {
   async getOne(req, res) {
     try {
       const data = await user.findOne({ _id: req.user.id });
-      const userReview = await review.find({ userId: req.user.id });
 
       if (!data) {
         return res.status(404).json({
@@ -17,7 +16,6 @@ class UserController {
       return res.status(200).json({
         message: "Success",
         data,
-        userReview,
       });
     } catch (err) {
       return res.status(500).json({
@@ -63,7 +61,7 @@ class UserController {
         });
       }
 
-      let data = await user.findOneAndUpdate(
+      const data = await user.findOneAndUpdate(
         {
           _id: req.params.id,
         },
@@ -84,29 +82,7 @@ class UserController {
       });
     }
   }
-  getUserReviews = async (req, res) => {
-    try {
-      const data = await user.findOne({ _id: req.params.id });
-      const userReview = await review.find({ userId: req.params.id });
-
-      if (!data) {
-        return res.status(404).json({
-          message: "User not found",
-        });
-      }
-
-      return res.status(200).json({
-        message: "Success",
-        data,
-        userReview,
-      });
-    } catch (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
-    }
-  };
+  
 }
 
 module.exports = new UserController();

@@ -39,12 +39,7 @@ class MovieController {
       const skip = (req.params.page - 1) * 10;
 
       total = Math.ceil(total.length / 10);
-      const getCategory = await movie
-        .find({
-          category: req.params.category,
-        })
-        .skip(skip)
-        .limit(10);
+      const getCategory = await movie.find({ category: req.params.category }).skip(skip).limit(10);
 
       return res.status(200).json({
         message: "Success Get Category",
@@ -85,7 +80,7 @@ class MovieController {
 
       const getOne = await movie
         .findOne({ _id: req.params.id })
-        .populate({path: "reviews", populate: {path: "userId"}})
+        .populate({ path: "reviews", populate: { path: "userId", select: { name: 1, username: 1, image: 1 } } })
         .populate("categories")
         .populate("casts");
 
@@ -107,7 +102,7 @@ class MovieController {
 
       const create = await movie.create(req.body);
 
-      res.status(200).json({
+      return res.status(200).json({
         message: "Movie Succesfully Registered",
         data: create,
       });
@@ -134,14 +129,14 @@ class MovieController {
         }
       }
 
-      await movie.updateOne({ _id: req.params.id }, { ...req.body, $push: { casts: req.body.castId } }, { new: true });
+      await movie.updateOne({ _id: req.params.id }, { $set: req.body }, { new: true });
+
       const result = await movie.findOne({ _id: req.params.id });
 
       return res.status(200).json({
         message: "Success",
         data: result,
       });
-      
     } catch (error) {
       return res.status(500).json({
         message: "Internal Server Error",
@@ -158,6 +153,7 @@ class MovieController {
 
       await this.delFiles(result.poster);
       await this.delFiles(result.trailer);
+
       await movie.deleteOne({ _id: req.params.id });
 
       return res.status(200).json({

@@ -2,13 +2,14 @@ const { review, user, movie } = require("../models");
 
 class ReviewController {
   // Get one
-  async getOne(req, res) {
+  async getMyReview(req, res) {
     try {
       // Find one data
-      let data = await review.findOne({ _id: req.params.id, userId: req.user.id });
+      const userData = await user.findOne({ _id: req.user.id }).select({ name: 1, username: 1, image: 1 });
+      const dataReview = await review.find({ userId: req.user.id }).sort({ _id: -1 }).limit(10);
 
       // if data not found
-      if (!data) {
+      if (!userData) {
         return res.status(404).json({
           message: "Review not found",
         });
@@ -17,27 +18,51 @@ class ReviewController {
       // If successful
       return res.status(200).json({
         message: "Success",
-        data,
+        userData,
+        dataReview,
       });
-    } catch (e) {
+    } catch (err) {
       return res.status(500).json({
         message: "Internal Server Error",
         error: err.message,
       });
     }
   } // end of Get One
+  getUserReviews = async (req, res) => {
+    try {
+      const userData = await user.findOne({ _id: req.params.id }).select({ name: 1, username: 1, image: 1 });
+      const userReview = await review.find({ userId: req.params.id }).sort({ _id: -1 }).limit(10);
 
+      if (!userData) {
+        return res.status(404).json({
+          message: "User not found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Success",
+        userData,
+        userReview,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err.message,
+      });
+    }
+  };
   // Create Review
   async create(req, res) {
     try {
       // create data
       req.body.userId = req.user.id;
-      let data = await review.create(req.body);
+      const createReview = await review.create(req.body);
+      await movie.updateOne({ _id: req.body.movieId }, { $push: { reviews: createReview._id } });
 
       // if successful
       return res.status(201).json({
         message: "Success",
-        data,
+        createReview,
       });
     } catch (err) {
       return res.status(500).json({

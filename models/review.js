@@ -37,19 +37,18 @@ ReviewSchema.index({ movieId: 1, userId: 1 }, { unique: true });
 
 // Static method to get average rating
 ReviewSchema.statics.getAverageRating = async function (movieId) {
-  const obj = await this.aggregate([
-    {
-      $match: { movieId: movieId },
-    },
-    {
-      $group: {
-        _id: "$movieId",
-        averageRating: { $avg: "$rating" },
-      },
-    },
-  ]);
-  console.log(obj)
   try {
+    const obj = await this.aggregate([
+      {
+        $match: { movieId: movieId },
+      },
+      {
+        $group: {
+          _id: "$movieId",
+          averageRating: { $avg: "$rating" },
+        },
+      },
+    ]);
     await this.model("movie").findByIdAndUpdate(movieId, {
       averageRating: obj[0].averageRating,
     });
@@ -76,28 +75,6 @@ ReviewSchema.post("findOneAndUpdate", async function (e) {
       },
       {
         /*fix this */
-        $group: {
-          _id: "$movieId",
-          averageRating: { $avg: "$rating" },
-        },
-      },
-    ]);
-    await mongoose.model("movie").findByIdAndUpdate(e.movieId, {
-      averageRating: obj[0].averageRating,
-    });
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-// calculate averate rating after update review
-ReviewSchema.post("findOneAndUpdate", async function (e) {
-  try {
-    const obj = await mongoose.model("review").aggregate([
-      {
-        $match: { movieId: e.movieId },
-      },
-      {
         $group: {
           _id: "$movieId",
           averageRating: { $avg: "$rating" },
