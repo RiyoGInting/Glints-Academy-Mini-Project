@@ -129,6 +129,7 @@ class CastController {
       //if success
       return res.status(200).json({
         message: "Success Delete Data",
+        deleted: findData,
       });
       //if error
     } catch (error) {

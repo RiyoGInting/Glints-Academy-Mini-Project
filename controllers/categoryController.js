@@ -6,7 +6,6 @@ class CategoryController {
     try {
       //find all data
       let data = await category.find();
-      console.log(data);
       //if no data
       if (data.length === 0) {
         return res.status(404).json({
@@ -32,9 +31,11 @@ class CategoryController {
   async getOne(req, res) {
     try {
       //find all data
-      let data = await category.findOne({
-        _id: req.params.id,
-      }).populate(movie);
+      let data = await category
+        .findOne({
+          _id: req.params.id,
+        })
+        .populate("movie");
       //if no data
       if (!data) {
         return res.status(404).json({
@@ -85,7 +86,7 @@ class CategoryController {
         },
         req.body,
         {
-            new: true,
+          new: true,
         }
       );
       //if no data
@@ -128,6 +129,7 @@ class CategoryController {
       //if success
       return res.status(200).json({
         message: "Success Delete Data",
+        deleted: findData,
       });
       //if error
     } catch (error) {

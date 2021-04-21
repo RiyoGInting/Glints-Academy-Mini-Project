@@ -7,7 +7,6 @@ class ReviewController {
       // Find one data
       const userData = await user.findOne({ _id: req.user.id }).select({ name: 1, username: 1, image: 1 });
       const dataReview = await review.find({ userId: req.user.id }).sort({ _id: -1 }).limit(10);
-
       // if data not found
       if (!userData) {
         return res.status(404).json({
@@ -31,7 +30,7 @@ class ReviewController {
   getUserReviews = async (req, res) => {
     try {
       const userData = await user.findOne({ _id: req.params.id }).select({ name: 1, username: 1, image: 1 });
-      const userReview = await review.find({ userId: req.params.id }).sort({ _id: -1 }).limit(10);
+      const userReview = await review.find({ userId: req.params.id }).sort({ createdAt: -1 }).limit(10);
 
       if (!userData) {
         return res.status(404).json({

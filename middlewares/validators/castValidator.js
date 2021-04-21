@@ -76,10 +76,6 @@ class CastValidator {
       if (!checkId) {
         errors.push(`ID is invalid`);
       }
-      //check if naea is just using alphabet
-      if (!validator.isAlphanumeric(validator.blacklist(req.body.nama, " "))) {
-        errors.push("Nama harus diisi dengan huruf saja");
-      }
       //check if name is just using alphabet
       if (!validator.isAlphanumeric(validator.blacklist(req.body.name, " "))) {
         errors.push("Name must be alphabet only");

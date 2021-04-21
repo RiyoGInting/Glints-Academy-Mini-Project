@@ -29,19 +29,13 @@ exports.create = async (req, res, next) => {
       errors.push("Movie ID is not valid.  Must be a 24 character-long hexadecimal");
     }
 
-    // check if rating is numeric
-    if (!validator.isNumeric(req.body.rating)) {
-      errors.push("Rating must be a number");
-    }
-
     // check if rating is between the numbers 1-5
     if (req.body.rating < 0 || req.body.rating > 6) {
       errors.push("Please rate movie between 1 to 5 stars");
     }
 
     // find user & movie IDs
-    let findData = await movie.findOne({ _id: req.body.movieId })
-
+    let findData = await movie.findOne({ _id: req.body.movieId });
     // if movie not found
     if (!findData) {
       errors.push("Movie not found");
@@ -75,11 +69,6 @@ exports.update = async (req, res, next) => {
     // check if rating is between the numbers 1-5
     if (req.body.rating < 0 || req.body.rating > 6) {
       errors.push("Please rate movie between 1 to 5 stars");
-    }
-
-    // check if rating is numeric
-    if (!validator.isNumeric(req.body.rating)) {
-      errors.push("Rating must be a number");
     }
 
     // find user & movie IDs

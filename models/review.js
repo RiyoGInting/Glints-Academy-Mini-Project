@@ -53,7 +53,7 @@ ReviewSchema.statics.getAverageRating = async function (movieId) {
       averageRating: obj[0].averageRating,
     });
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 };
 
