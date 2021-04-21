@@ -5,7 +5,7 @@ const { user } = require("../models");
 class UserController {
   async getOne(req, res) {
     try {
-      const data = await user.findOne({ _id: req.user.id });
+      const data = await user.findOne({ _id: req.user.id }).select('-role');
 
       if (!data) {
         return res.status(404).json({
