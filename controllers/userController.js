@@ -63,7 +63,7 @@ class UserController {
 
       const data = await user.findOneAndUpdate(
         {
-          _id: req.params.id,
+          _id: req.user.id,
         },
         req.body,
         {
