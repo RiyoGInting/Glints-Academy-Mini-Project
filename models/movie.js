@@ -21,6 +21,18 @@ const MovieSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
+    director: {
+      type: String,
+      required: false
+    },
+    budget: {
+      type: Number,
+      required: false
+    },
+    director: {
+      type: String,
+      required: false
+    },
     category: {
       type: mongoose.Schema.ObjectId,
       ref: "category",
