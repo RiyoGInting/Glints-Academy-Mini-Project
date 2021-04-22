@@ -155,9 +155,9 @@ describe("Auth and User Test", ()=> {
       expect(res.body).toHaveProperty("data")
     })
     it("it should update user ", async ()=> {
-      const find = await user.findOne({email: "fikriztm@gmail.com"})
+      // const find = await user.findOne({email: "fikriztm@gmail.com"})
       const res = await request(app)
-        .put(`/user/${find._id}`)
+        .put(`/user/`)
         .set('Authorization', `bearer ${tokenAdmin}`)
         .send({ name: 'ikhzz' })
 
