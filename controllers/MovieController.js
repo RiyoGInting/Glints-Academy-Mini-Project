@@ -103,7 +103,7 @@ class MovieController {
       const create = await movie.create(req.body);
 
       return res.status(200).json({
-        message: "Movie Succesfully Registered",
+        message: "Movie Successfully Registered",
         data: create,
       });
     } catch (error) {
@@ -134,7 +134,7 @@ class MovieController {
       const result = await movie.findOne({ _id: req.params.id });
 
       return res.status(200).json({
-        message: "Success",
+        message: "Movie Successfully Updated",
         data: result,
       });
     } catch (error) {

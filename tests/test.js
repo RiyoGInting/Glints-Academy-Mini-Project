@@ -9,7 +9,8 @@ beforeAll(async () => {
     category.deleteMany({name: 'Randoms'}),
     cast.deleteMany({name: 'Randoms'}),
     user.deleteOne({email: 'fikriztm@gmail.com'}),
-    review.deleteMany()
+    review.deleteMany(),
+    movie.deleteOne({title: "movie create 1"})
   ])
 });
 
@@ -129,6 +130,19 @@ describe("Auth and User Test", ()=> {
       expect(res.body).toBeInstanceOf(Object)
       expect(res.body.message).toEqual("Success")
       expect(res.body).toHaveProperty("token")
+    })
+    it("it should not create a user and not return the token", async ()=> {
+      const res = await request(app).post('/auth/signup').send({
+        email: "ihkz@gmail.com",
+        password: "Default1",
+        confirmPassword: "Default1",
+        name: "ikhz",
+        role: "admin"
+      })
+
+      expect(res.statusCode).toEqual(400)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Password has no symbol case")
     })
     
     it("it should login user and return the token", async ()=> {
@@ -250,40 +264,103 @@ describe("Movie Test", ()=> {
   describe("/movie/", ()=> {
     it("get all movie", async ()=> {
       const res = await request(app).get('/movie/').send({})
-
+  
       expect(res.statusCode).toEqual(200)
       expect(res.body).toBeInstanceOf(Object)
       expect(res.body.message).toEqual("Success")
       expect(res.body).toHaveProperty("result")
     })
-  })
-  describe("/movie/category", ()=> {
+    it("get all movie another page", async ()=> {
+      const res = await request(app).get('/movie/2').send({})
+  
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Success")
+      expect(res.body).toHaveProperty("result")
+    })
+    it("get all movie another page wrong params", async ()=> {
+      const res = await request(app).get('/movie/a').send({})
+  
+      expect(res.statusCode).toEqual(400)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Page request must be numerical")
+    })
     it("get all movie by category", async ()=> {
       const res = await request(app).get('/movie/category/6077cbb513212953207129d1').send({})
-
+  
       expect(res.statusCode).toEqual(200)
       expect(res.body).toBeInstanceOf(Object)
       expect(res.body.message).toEqual("Success Get Category")
       expect(res.body).toHaveProperty("result")
     })
-  })
-  describe("/movie/title", ()=> {
+    it("get all movie by category and page", async ()=> {
+      const res = await request(app).get('/movie/category/6077cbb513212953207129d1/1').send({})
+  
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Success Get Category")
+      expect(res.body).toHaveProperty("result")
+    })
     it("get all movie by title", async ()=> {
       const res = await request(app).get('/movie/title/avenger').send({})
-
+  
       expect(res.statusCode).toEqual(200)
       expect(res.body).toBeInstanceOf(Object)
       expect(res.body.message).toEqual("Success Get Title by Search")
       expect(res.body).toHaveProperty("result")
     })
-  })
-  describe("/movie/detail", ()=> {
     it("get all movie by detail", async ()=> {
       const res = await request(app).get('/movie/detail/607bba9714bdf13575eb7187').send({})
-
+  
       expect(res.statusCode).toEqual(200)
       expect(res.body).toBeInstanceOf(Object)
       expect(res.body).toHaveProperty("result")
+    })
+    
+    it("create one movie ", async ()=> {
+      const res = await request(app).post('/movie/')
+      .set('Authorization', `bearer ${tokenAdmin}`)
+      .send({
+        title: "movie create 1",
+        synopsis: "movie synopsis 1",
+        releaseYear: 1990,
+        director: "not me",
+        budget: 10000000,
+        studio: "team d studios"
+      })
+  
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Movie Successfully Registered")
+      expect(res.body).toHaveProperty("data")
+    })
+    it("update one movie ", async ()=> {
+      const find = await movie.findOne({title: 'movie create 1'})
+      const res = await request(app).put(`/movie/update/${find._id}`)
+      .set('Authorization', `bearer ${tokenAdmin}`)
+      .send({
+        title: "movie create 1",
+        synopsis: "updated synopsis",
+        releaseYear: 1990,
+        director: "not me",
+        budget: 10000000,
+        studio: "team d studios"
+      })
+  
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Movie Successfully Updated")
+      expect(res.body).toHaveProperty("data")
+    })
+    it("delete one movie ", async ()=> {
+      const find = await movie.findOne({title: 'movie create 1'})
+      const res = await request(app).delete(`/movie/delete/${find._id}`)
+      .set('Authorization', `bearer ${tokenAdmin}`)
+      .send({})
+  
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual(`Success, Movie ${find.title} is Deleted`)
     })
   })
 })
