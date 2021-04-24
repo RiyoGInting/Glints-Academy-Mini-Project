@@ -101,7 +101,7 @@ class UserController {
     } catch (err) {
       return res.status(500).json({
         message: "Internal Server Error",
-        error: e,
+        error: err,
       });
     }
   }
@@ -120,7 +120,7 @@ class UserController {
     } catch (err) {
       return res.status(500).json({
         message: "Internal Server Error",
-        error: e,
+        error: err,
       });
     }
   }
@@ -139,7 +139,7 @@ class UserController {
     } catch (err) {
       return res.status(500).json({
         message: "Internal Server Error",
-        error: e,
+        error: err,
       });
     }
   }
