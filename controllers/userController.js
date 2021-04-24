@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const path = require("path");
 const { user } = require("../models");
+const { findById } = require("../models/category");
 
 class UserController {
   async getOne(req, res) {
@@ -89,12 +90,50 @@ class UserController {
     try {
       const data = await user.findOneAndUpdate(
         { _id: req.user.id },
-        { $push: { watchlist: req.body.movieId } },
+        { $addToSet: { watchlist: req.body.movieId } },
         { new: true }
       );
-      console.log("Ini req body", req.body.movieId);
+
       return res.status(201).json({
+        message: "Added to watchlist",
+        data,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: e,
+      });
+    }
+  }
+
+  async getWatchlist(req, res) {
+    try {
+      const data = await user.findOne({ _id: req.user.id }).populate({
+        path: "watchlist",
+        select: "poster title",
+      });
+
+      return res.status(200).json({
         message: "Success",
+        data,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: e,
+      });
+    }
+  }
+
+  async removeWatchlist(req, res) {
+    try {
+      const data = await user.findOneAndUpdate(
+        { _id: req.user.id },
+        { $pull: { watchlist: req.body.movieId } },
+        { new: true }
+      );
+      return res.status(201).json({
+        message: "Removed from watchlist",
         data,
       });
     } catch (err) {
