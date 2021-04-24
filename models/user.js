@@ -34,6 +34,12 @@ const UserSchema = new mongoose.Schema(
       required: false,
       get: getImage,
     },
+    watchlist: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "movie",
+      },
+    ],
   },
   {
     timestamps: {

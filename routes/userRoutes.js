@@ -7,5 +7,6 @@ const auth = require("../middlewares/auth");
 
 router.get("/", auth.adminOrUser, userController.getOne);
 router.put("/", auth.adminOrUser, userValidator.update, userController.update);
+router.put("/addWatchlist", auth.adminOrUser, userController.addWatchlist);
 
 module.exports = router;

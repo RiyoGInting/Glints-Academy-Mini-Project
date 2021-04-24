@@ -5,7 +5,7 @@ const { user } = require("../models");
 class UserController {
   async getOne(req, res) {
     try {
-      const data = await user.findOne({ _id: req.user.id }).select('-role');
+      const data = await user.findOne({ _id: req.user.id }).select("-role");
 
       if (!data) {
         return res.status(404).json({
@@ -38,7 +38,9 @@ class UserController {
 
         // Check file size (max 1MB)
         if (file.size > 1000000) {
-          return res.status(400).json({ message: "Image must be less than 1MB" });
+          return res
+            .status(400)
+            .json({ message: "Image must be less than 1MB" });
         }
 
         // Create custom filename
@@ -82,7 +84,26 @@ class UserController {
       });
     }
   }
-  
+
+  async addWatchlist(req, res) {
+    try {
+      const data = await user.findOneAndUpdate(
+        { _id: req.user.id },
+        { $push: { watchlist: req.body.movieId } },
+        { new: true }
+      );
+      console.log("Ini req body", req.body.movieId);
+      return res.status(201).json({
+        message: "Success",
+        data,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: e,
+      });
+    }
+  }
 }
 
 module.exports = new UserController();
