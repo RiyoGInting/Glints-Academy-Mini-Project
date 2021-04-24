@@ -29,7 +29,7 @@ const MovieSchema = new mongoose.Schema(
       type: Number,
       required: false
     },
-    director: {
+    studio: {
       type: String,
       required: false
     },
