@@ -6,7 +6,7 @@ class ReviewController {
     try {
       // Find one data
       const userData = await user.findOne({ _id: req.user.id }).select({ name: 1, username: 1, image: 1 });
-      const dataReview = await review.find({ userId: req.user.id }).sort({ _id: -1 }).limit(10);
+      const dataReview = await review.find({ userId: req.user.id }).sort({ _id: -1 }).limit(10).populate({path: 'movieId', select: {title:1,averageRating:1, synopsis: 1, poster: 1}});
       // if data not found
       if (!userData) {
         return res.status(404).json({

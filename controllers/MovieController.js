@@ -81,7 +81,7 @@ class MovieController {
       const getOne = await movie
         .findOne({ _id: req.params.id })
         .populate({ path: "reviews", populate: { path: "userId", select: { name: 1, username: 1, image: 1 } } })
-        .populate("categories")
+        .populate("category")
         .populate("casts");
 
       return res.status(200).json({

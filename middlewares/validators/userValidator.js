@@ -3,7 +3,6 @@ const validator = require("validator");
 exports.update = async (req, res, next) => {
   try {
     let errors = [];
-    const reWhiteSpace = new RegExp("/^\s+$/");
 
     if (req.body.name && !validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
       errors.push("Name must be a valid alpha");

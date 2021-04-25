@@ -1,7 +1,6 @@
 const crypto = require("crypto");
 const path = require("path");
 const { user } = require("../models");
-const { findById } = require("../models/category");
 
 class UserController {
   async getOne(req, res) {
