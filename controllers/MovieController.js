@@ -8,8 +8,8 @@ class MovieController {
   getAll = async (req, res) => {
     try {
       let total = await movie.find();
-      if (req.params.page == 0) req.params.page = 1;
-      const skip = (req.params.page - 1) * 10;
+      // if (req.params.page == 0) req.params.page = 1;
+      const skip = req.params.page * 10;
 
       total = Math.ceil(total.length / 10);
       const getAll = await movie.find().skip(skip).limit(10);
