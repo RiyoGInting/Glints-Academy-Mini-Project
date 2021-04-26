@@ -59,7 +59,6 @@ const MovieSchema = new mongoose.Schema(
       type: String,
       required: false,
       default: null,
-      get: getTrailer,
     },
   },
   {
@@ -73,9 +72,6 @@ const MovieSchema = new mongoose.Schema(
 
 function getPoster(poster) {
   return poster ? `/images/moviePoster/${poster}` : `/default/default-poster.png`;
-}
-function getTrailer(video) {
-  return video ? `/videos/movieTrailer/${video}` : `/default/default-poster.png`;
 }
 
 MovieSchema.plugin(mongooseDelete, { overrideMethods: "all" });
