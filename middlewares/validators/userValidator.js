@@ -4,11 +4,19 @@ exports.update = async (req, res, next) => {
   try {
     let errors = [];
 
+<<<<<<< HEAD
     if (
       req.body.name &&
       !validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })
     ) {
+=======
+    if (req.body.name && !validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
+>>>>>>> b2fe7816db90283c6b0ba00badc62714bea7ae8b
       errors.push("Name must be a valid alpha");
+    }
+    
+    if(req.body.hasOwnProperty('email') && !validator.isEmail(req.body.email)){
+      errors.push('Must be valid email')
     }
 
     // password validation

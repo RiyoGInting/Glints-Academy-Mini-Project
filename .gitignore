@@ -1,3 +1,11 @@
 node_modules/
-public/images/*
+coverage/
 .env.development
+.env.test
+public/images/moviePoster/*
+!public/images/moviePoster/.gitkeep
+public/videos/moviePoster/*
+!public/videos/moviePoster/.gitkeep
+public/images/*.jpg
+public/images/*.png
+public/images/*.jpeg

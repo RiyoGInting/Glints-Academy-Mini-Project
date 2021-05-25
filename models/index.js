@@ -9,9 +9,13 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then(() => console.log("MongoDB Connected!"))
-  .catch((err) => console.error(err));
+  .then(() => console.log("mongoose connected"))
+  .catch((err) => console.log(err));
 
+const category = require('./category')
+const cast = require('./cast')
+const movie = require("./movie");
+const review = require("./review");
 const user = require("./user");
 
-module.exports = { user };
+module.exports = { movie, review, user, cast, category };
